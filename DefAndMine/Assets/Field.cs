@@ -54,27 +54,12 @@ public class Field : MonoBehaviour
             RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-            if(Physics.Raycast(ray,out hit))
-            {
-                Cell cell;
-                if (hit.collider.TryGetComponent(out cell))
-                {
-                    cell.SwitchPower();
-                }
-            }
-        }
-
-        if (Input.GetMouseButtonDown(1))
-        {
-            RaycastHit hit;
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
             if (Physics.Raycast(ray, out hit))
             {
                 Cell cell;
                 if (hit.collider.TryGetComponent(out cell))
                 {
-                    cell.ChainDisablePower();
+                    cell.Wiring.Value = !cell.Wiring.Value;
                 }
             }
         }
