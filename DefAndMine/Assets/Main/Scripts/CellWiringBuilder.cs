@@ -40,17 +40,17 @@ public class CellWiringBuilder : MonoBehaviour
 
             if (neighborsHasWiring[(int)EDirection.N] && neighborsHasWiring[(int)EDirection.S])
             {
-                cell_wiringZ_trans.localScale = new Vector3(0.1f, 0.1f, 1f);
+                cell_wiringZ_trans.localScale = new Vector3(1f, 0.1f, 0.1f);
                 cell_wiringZ_trans.localPosition = Vector3.zero;
             }
             else if (neighborsHasWiring[(int)EDirection.N])
             {
-                cell_wiringZ_trans.localScale = new Vector3(0.1f, 0.1f, 0.55f);
+                cell_wiringZ_trans.localScale = new Vector3(0.55f, 0.1f, 0.1f);
                 cell_wiringZ_trans.localPosition = new Vector3(0f, 0f, 0.225f);
             }
             else if (neighborsHasWiring[(int)EDirection.S])
             {
-                cell_wiringZ_trans.localScale = new Vector3(0.1f, 0.1f, 0.55f);
+                cell_wiringZ_trans.localScale = new Vector3(0.55f, 0.1f, 0.1f);
                 cell_wiringZ_trans.localPosition = new Vector3(0f, 0f, -0.225f);
             }
             else

@@ -31,7 +31,10 @@ public class Field : MonoBehaviour
         {
             for (int x = 0; x < Width; x++)
             {
-                cells[x, z] = Instantiate(cell_prefab, new Vector3(-Width / 2f + x + 0.5f, 0, -Length / 2f + z + 0.5f), Quaternion.identity, cells_parent);
+                cells[x, z] = Instantiate(cell_prefab, cells_parent);
+                cells[x, z].transform.localPosition = new Vector3(-Width / 2f + x + 0.5f, 0, -Length / 2f + z + 0.5f);
+                cells[x, z].transform.localRotation = Quaternion.identity;
+
                 cells[x, z].Init(this, x, z);
 
                 if (x > 0)
