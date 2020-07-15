@@ -60,6 +60,7 @@ public class Field : MonoBehaviour
                 if (hit.collider.TryGetComponent(out cell))
                 {
                     cell.Wiring.Value = !cell.Wiring.Value;
+                    cell.Power.Value = Random.Range(0, 25);
                 }
             }
         }

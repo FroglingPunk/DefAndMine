@@ -24,6 +24,7 @@ public class Cell : MonoBehaviour
         Wiring.OnValueChanged += (value) => CellWiringBuilder.RebuildWiring(this);
         Wiring.Value = false;
 
+        Power.OnValueChanged += (value) => GetComponentInChildren<TextMesh>().text = Wiring.Value ? value.ToString() : string.Empty;
         Power.Value = 0;
     }
 
