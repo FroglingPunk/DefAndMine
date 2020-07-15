@@ -43,8 +43,6 @@ public class Field : MonoBehaviour
                 {
                     cells[x, z].SetNeighbor(cells[x, z - 1], EDirection.S);
                 }
-
-                cells[x, z].HasPower = false;
             }
         }
     }
