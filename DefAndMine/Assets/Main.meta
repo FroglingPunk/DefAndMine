@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<< HEAD:DefAndMine/Assets/Main.meta
 guid: 9f8dbe935c0d10442a1bf72e5941c135
+=======
+guid: 63ece3da14f54aa47bf72a879313a1c2
+>>>>>>> 881af503d2e2c471cccc04d5acc6e91721f82767:DefAndMine/Assets/Scripts.meta
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}
