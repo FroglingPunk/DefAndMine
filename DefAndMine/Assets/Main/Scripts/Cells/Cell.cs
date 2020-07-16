@@ -1,5 +1,9 @@
 ﻿using UnityEngine;
 
+public class CellWiring : NotifyingVariable<bool> { }
+public class CellPower : NotifyingVariable<int> { }
+public class CellStructure : NotifyingVariable<Structure> { }
+
 public class Cell : MonoBehaviour
 {
     public CellWiring Wiring { get; private set; }
@@ -7,6 +11,7 @@ public class Cell : MonoBehaviour
     public Field Field { get; private set; }
     public int IDx { get; private set; }
     public int IDz { get; private set; }
+    public CellStructure Structure { get; set; }
 
     private Cell[] neighbors;
 
@@ -18,15 +23,11 @@ public class Cell : MonoBehaviour
         IDz = id_z;
 
         neighbors = new Cell[4];
-        Wiring = new CellWiring();
-        Power = new CellPower();
-
-        Wiring.OnValueChanged += (value) => CellWiringBuilder.RebuildWiring(this);
-        Wiring.Value = false;
-
-        Power.OnValueChanged += (value) => GetComponentInChildren<TextMesh>().text = Wiring.Value ? value.ToString() : string.Empty;
-        Power.Value = 0;
+        Wiring = new CellWiring { Value = false };
+        Power = new CellPower { Value = 0 };
+        Structure = new CellStructure();
     }
+
 
     public bool HasNeighbor(EDirection direction)
     {
@@ -42,8 +43,5 @@ public class Cell : MonoBehaviour
     {
         neighbors[(int)direction] = neighbor;
         neighbor.neighbors[(int)direction.Opposite()] = this;
-
-        neighbor.Wiring.OnValueChanged += (value) => CellWiringBuilder.RebuildWiring(this);
-        Wiring.OnValueChanged += (value) => CellWiringBuilder.RebuildWiring(neighbor);
     }
 }
