@@ -1,7 +1,11 @@
-﻿public enum EDirection
+﻿public enum EDirection : byte
 {
-    N,
+    N = 0,
+    NE,
     E,
+    SE,
     S,
-    W
+    SW,
+    W,
+    NW
 }

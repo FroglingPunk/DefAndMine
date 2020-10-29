@@ -1,70 +1,151 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System;
 using UnityEngine;
 
 public class Field : MonoBehaviour
 {
-    [SerializeField]
-    private Cell cell_prefab;
-    [SerializeField]
-    private Transform cells_parent;
+    static private Field instance;
+    static public Field Instance
+    {
+        get
+        {
+            if(instance == null)
+            {
+                instance = FindObjectOfType<Field>();
+            }
 
-    [SerializeField]
-    private int width;
-    [SerializeField]
-    private int length;
+            return instance;
+        }
+    }
 
-    private Cell[,] cells;
+    // "кнопка" для заполнения данных о плоскости на основе клеток в transform.childrens
+    [SerializeField] private bool VALIDATE_COLLECT_CELLS = false;
+    [SerializeField] private Cell[] cells;
 
-    public Cell this[int x, int z] => cells[x, z];
+    // ширина плоскости (клетки вдоль оси X)
+    [SerializeField] private int width;
+    // длина плоскости (клетки вдоль оси Z)
+    [SerializeField] private int length;
 
     public int Width => width;
     public int Length => length;
 
-
-
-    void Start()
+    public Cell this[int x, int z]
     {
-        cells = new Cell[Width, Length];
-
-        for (int z = 0; z < Length; z++)
+        get
         {
-            for (int x = 0; x < Width; x++)
+            return (x < 0 || z < 0 || x >= width || z >= length) ? null : cells[z * width + x];
+        }
+    }
+
+    public Material defaultCellMaterial;
+    public Material chosenCellMaterial;
+
+    private Cell lastChosenCell;
+
+
+    void OnValidate()
+    {
+        if (VALIDATE_COLLECT_CELLS)
+        {
+            VALIDATE_COLLECT_CELLS = false;
+
+            cells = GetComponentsInChildren<Cell>();
+
+            for (int i = 1; i < cells.Length; i++)
             {
-                cells[x, z] = Instantiate(cell_prefab, cells_parent);
-                cells[x, z].transform.localPosition = new Vector3(-Width / 2f + x + 0.5f, 0, -Length / 2f + z + 0.5f);
-                cells[x, z].transform.localRotation = Quaternion.identity;
-
-                cells[x, z].Init(this, x, z);
-
-                if (x > 0)
+                if (cells[i].transform.localPosition.z != cells[i - 1].transform.localPosition.z)
                 {
-                    cells[x, z].SetNeighbor(cells[x - 1, z], EDirection.W);
+                    width = i;
+                    length = cells.Length / width;
+                    break;
                 }
+            }
 
-                if (z > 0)
+            for (int z = 0; z < length; z++)
+            {
+                for (int x = 0; x < width; x++)
                 {
-                    cells[x, z].SetNeighbor(cells[x, z - 1], EDirection.S);
+                    cells[x + z * width].name = "Cell [" + x + ":" + z + "]";
                 }
             }
         }
     }
 
+    void Awake()
+    {
+        Init();
+    }
+
     void Update()
     {
+        RaycastHit hit;
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+        if (Physics.Raycast(ray, out hit))
+        {
+            Cell cell;
+            if (hit.collider.TryGetComponent(out cell))
+            {
+                if (lastChosenCell != cell)
+                {
+                    if (lastChosenCell)
+                    {
+                        lastChosenCell.GetComponent<Renderer>().sharedMaterial = defaultCellMaterial;
+                        lastChosenCell = null;
+                    }
+
+                    lastChosenCell = cell;
+                    lastChosenCell.GetComponent<Renderer>().sharedMaterial = chosenCellMaterial;
+                }
+            }
+            else
+            {
+                if (lastChosenCell)
+                {
+                    lastChosenCell.GetComponent<Renderer>().sharedMaterial = defaultCellMaterial;
+                    lastChosenCell = null;
+                }
+            }
+        }
+        else
+        {
+            if (lastChosenCell)
+            {
+                lastChosenCell.GetComponent<Renderer>().sharedMaterial = defaultCellMaterial;
+                lastChosenCell = null;
+            }
+        }
+
         if (Input.GetMouseButtonDown(0))
         {
-            RaycastHit hit;
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-            if (Physics.Raycast(ray, out hit))
+            Cell cell;
+            if (hit.collider.TryGetComponent(out cell))
             {
-                Cell cell;
-                if (hit.collider.TryGetComponent(out cell))
-                {
-                    cell.Wiring.Value = !cell.Wiring.Value;
-                    cell.Power.Value = Random.Range(0, 25);
-                }
+                cell.Wiring.Value = !cell.Wiring.Value;
+                //cell.Power.Value = UnityEngine.Random.Range(0, 25);
+            }
+        }
+    }
+
+
+    public void Init()
+    {
+        for (int z = 0; z < Length; z++)
+        {
+            for (int x = 0; x < Width; x++)
+            {
+                cells[x + z * Width].Init(x, z);
+            }
+        }
+    }
+
+    public void ActionAllCells(Action<Cell> action)
+    {
+        for (int z = 0; z < Length; z++)
+        {
+            for (int x = 0; x < Width; x++)
+            {
+                action(cells[z * width + x]);
             }
         }
     }
