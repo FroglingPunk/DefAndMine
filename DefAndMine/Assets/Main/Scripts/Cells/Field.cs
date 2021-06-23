@@ -8,7 +8,7 @@ public class Field : MonoBehaviour
     {
         get
         {
-            if(instance == null)
+            if (instance == null)
             {
                 instance = FindObjectOfType<Field>();
             }
@@ -39,8 +39,6 @@ public class Field : MonoBehaviour
 
     public Material defaultCellMaterial;
     public Material chosenCellMaterial;
-
-    private Cell lastChosenCell;
 
 
     void OnValidate()
@@ -73,58 +71,28 @@ public class Field : MonoBehaviour
 
     void Awake()
     {
+        Control.Instance.OnCursorCellChanged += OnCursorCellChanged;
+        Control.Instance.OnCellChosen += SwitchWiring;
+
         Init();
     }
 
-    void Update()
+    
+    private void OnCursorCellChanged(Cell previousCell, Cell currentCell)
     {
-        RaycastHit hit;
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-        if (Physics.Raycast(ray, out hit))
+        if (previousCell)
         {
-            Cell cell;
-            if (hit.collider.TryGetComponent(out cell))
-            {
-                if (lastChosenCell != cell)
-                {
-                    if (lastChosenCell)
-                    {
-                        lastChosenCell.GetComponent<Renderer>().sharedMaterial = defaultCellMaterial;
-                        lastChosenCell = null;
-                    }
-
-                    lastChosenCell = cell;
-                    lastChosenCell.GetComponent<Renderer>().sharedMaterial = chosenCellMaterial;
-                }
-            }
-            else
-            {
-                if (lastChosenCell)
-                {
-                    lastChosenCell.GetComponent<Renderer>().sharedMaterial = defaultCellMaterial;
-                    lastChosenCell = null;
-                }
-            }
+            previousCell.GetComponent<Renderer>().sharedMaterial = defaultCellMaterial;
         }
-        else
+        if (currentCell)
         {
-            if (lastChosenCell)
-            {
-                lastChosenCell.GetComponent<Renderer>().sharedMaterial = defaultCellMaterial;
-                lastChosenCell = null;
-            }
+            currentCell.GetComponent<Renderer>().sharedMaterial = chosenCellMaterial;
         }
+    }
 
-        if (Input.GetMouseButtonDown(0))
-        {
-            Cell cell;
-            if (hit.collider.TryGetComponent(out cell))
-            {
-                cell.Wiring.Value = !cell.Wiring.Value;
-                //cell.Power.Value = UnityEngine.Random.Range(0, 25);
-            }
-        }
+    private void SwitchWiring(Cell cell)
+    {
+        cell.Wiring.Value = !cell.Wiring.Value;
     }
 
 

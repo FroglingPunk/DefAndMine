@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e2ef6a2c5622694ab1797bbaaae0f53, type: 3}
+  m_Name: DebugHeadModule 2
+  m_EditorClassIdentifier: 
+  prefab: {fileID: 629199535716559090, guid: 5aa189310f4855844840c8c6cf0f39c0, type: 3}
+  icon: {fileID: 21300000, guid: a3f4461a49e22334fbdf22204209f51d, type: 3}
+  unicalName: "\u0413\u043E\u043B\u043E\u0432\u0451\u0448\u043A\u0430"
+  description: "\u0414\u0435\u0431\u0430\u0436\u0438\u0440"
+  cost:
+    money: 0
+    titanium: 2
+    battery: 0
+    chips: 5
+    plasma: 0

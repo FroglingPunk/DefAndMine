@@ -17,4 +17,11 @@ public class NotifyingVariable<T>
     }
 
     public event Action<T> OnValueChanged;
+
+
+    public NotifyingVariable() { }
+    public NotifyingVariable(T startValue)
+    {
+        _value = startValue;
+    }
 }

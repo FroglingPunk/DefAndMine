@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using Contstructor;
+using Constructor.Structures;
 
 public class CellWiring : NotifyingVariable<bool> { }
 public class CellStructure : NotifyingVariable<Structure> { }
@@ -34,7 +34,7 @@ public class Cell : MonoBehaviour
             if (neighbor != null)
             {
                 neighbor.Wiring.OnValueChanged += (value) => CellWiringBuilder.RebuildWiring(this);
-                Wiring.OnValueChanged += (value) => CellWiringBuilder.RebuildWiring(neighbor);                
+                Wiring.OnValueChanged += (value) => CellWiringBuilder.RebuildWiring(neighbor);
             }
         }
 

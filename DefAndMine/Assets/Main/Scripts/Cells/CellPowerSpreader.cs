@@ -1,6 +1,7 @@
-﻿using Contstructor;
+﻿using Constructor.Structures;
 using System.Collections.Generic;
 using UnityEngine;
+using Constructor.Utils;
 
 public class CellPowerSpreader
 {
@@ -13,6 +14,17 @@ public class CellPowerSpreader
         for (int i = 0; i < structures.Length; i++)
         {
             Structure structure = structures[i];
+
+            // у структуры не успевшей заинициализироваться OccupiedCells = null
+            AutoInitStructureOnStart structureAutoIniter = null;
+            if (structure.TryGetComponent(out structureAutoIniter))
+            {
+                if (!structureAutoIniter.IsInit)
+                {
+                    continue;
+                }
+            }
+
 
             Queue<Cell> calcInPrevCycleCells = new Queue<Cell>();
 

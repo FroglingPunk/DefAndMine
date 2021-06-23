@@ -1,24 +1,44 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using System;
 
-namespace Contstructor.Utils
+namespace Constructor.Utils
 {
     [RequireComponent(typeof(SphereCollider))]
     public class InfluenceArea : MonoBehaviour
     {
         public List<Unit> UnitsInside { get; private set; }
-        public Unit GetRandomUnit
+        public Unit GetRandomUnit()
         {
-            get
+            if (UnitsInside.Count > 0)
             {
-                if (UnitsInside.Count > 0)
-                {
-                    return UnitsInside[Random.Range(0, UnitsInside.Count)];
-                }
-
-                return null;
+                return UnitsInside[UnityEngine.Random.Range(0, UnitsInside.Count)];
             }
+
+            return null;
         }
+
+        public Unit GetRandomUnit(string team)
+        {
+            List<Unit> teamUnits = new List<Unit>();
+            for(int i = 0; i < UnitsInside.Count; i++)
+            {
+                if(UnitsInside[i].Team == team)
+                {
+                    teamUnits.Add(UnitsInside[i]);
+                }
+            }
+
+            if (teamUnits.Count > 0)
+            {
+                return teamUnits[UnityEngine.Random.Range(0, teamUnits.Count)];
+            }
+
+            return null;
+        }
+
+        public event Action<Unit> OnUnitEnter;
+        public event Action<Unit> OnUnitExit;
 
 
         void Awake()
@@ -31,6 +51,7 @@ namespace Contstructor.Utils
             Unit unit = null;
             if (other.TryGetComponent(out unit))
             {
+                OnUnitEnter?.Invoke(unit);
                 UnitsInside.Add(unit);
                 unit.OnDie += OnUnitDie;
             }
@@ -41,6 +62,7 @@ namespace Contstructor.Utils
             Unit unit = null;
             if (other.TryGetComponent(out unit))
             {
+                OnUnitExit?.Invoke(unit);
                 UnitsInside.Remove(unit);
                 unit.OnDie += OnUnitDie;
             }
@@ -51,6 +73,7 @@ namespace Contstructor.Utils
         {
             unit.OnDie -= OnUnitDie;
             UnitsInside.Remove(unit);
+            OnUnitExit?.Invoke(unit);
         }
     }
 }

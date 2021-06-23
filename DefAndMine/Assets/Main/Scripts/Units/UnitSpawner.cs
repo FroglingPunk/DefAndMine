@@ -1,25 +1,13 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.Build;
-using UnityEngine;
+﻿using UnityEngine;
+using Constructor.Structures;
 
 public class UnitSpawner : MonoBehaviour
 {
-    [SerializeField] private Transform destination;
+    [SerializeField] private string unitTeam;
+    [SerializeField] private Structure destinationStructure;
     [SerializeField] private Transform spawnPoint;
-    [SerializeField] private Unit unitPrefab;
-    
+    [SerializeField] private MovementPath movementPath;
 
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.S))
-        {
-            Unit unit = Instantiate(unitPrefab, spawnPoint.position, Quaternion.identity);
-            unit.Init(destination);
-            unit.OnHealthChanged += OnUnitHealthChanged;
-            unit.OnDie += OnUnitDie;
-        }
-    }
 
     void OnUnitHealthChanged(Unit unit)
     {
@@ -29,5 +17,38 @@ public class UnitSpawner : MonoBehaviour
     void OnUnitDie(Unit unit)
     {
         Debug.Log(unit.gameObject.name + " IS DEAD");
+    }
+
+
+    public SimpleUnitBehaviour unit;
+    void Start()
+    {
+        if (unit)
+        {
+            unit.Init(ETeam.Player, movementPath, destinationStructure);
+        }
+    }
+
+    public void Spawn(Unit prefab)
+    {
+        Unit unit = Instantiate(prefab, spawnPoint.position, Quaternion.identity);
+        unit.Init(unitTeam, destinationStructure, movementPath);
+        unit.OnHealthChanged += OnUnitHealthChanged;
+        unit.OnDie += OnUnitDie;
+    }
+
+    public void SetDestination(Structure newDestinationStructure)
+    {
+        destinationStructure = newDestinationStructure;
+    }
+
+    public void SetSpawnPoint(Transform newSpawnPoint)
+    {
+        spawnPoint = newSpawnPoint;
+    }
+
+    public void SetMovementPath(MovementPath path)
+    {
+        movementPath = path;
     }
 }

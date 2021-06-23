@@ -43,8 +43,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ce4d66d4bcdbb04595c565f085af29f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  modules:
-  - {fileID: 6329788496062381085, guid: f457fe0c890103e429ee2d9f86ffbd97, type: 3}
-  - {fileID: 1339740121976204283, guid: 68e2f7e3554be844f9db2319d6ade401, type: 3}
-  blocks:
-  - {fileID: 4986190586279507910, guid: cacbbb15ccec73043a4b848afa5131fb, type: 3}
+  structuresModulesData:
+  - {fileID: 11400000, guid: f5bb6b86c5fe14d4aa74a7069d10c1cc, type: 2}
+  - {fileID: 11400000, guid: 9e63b68a996d00f45b4e37bbc9fe1595, type: 2}
+  structuresBlocksData:
+  - {fileID: 11400000, guid: 35b8cf448e2231e4da765e123e926879, type: 2}
+  unitsModulesData:
+  - {fileID: 11400000, guid: 7660fa3e0d89649428ac91e9c4577f71, type: 2}
+  - {fileID: 11400000, guid: a054b6fb5121736418ccfec49c9e8a5a, type: 2}
+  - {fileID: 11400000, guid: 1b5b1a3b830fe8f45acdc9006c017e02, type: 2}
+  - {fileID: 11400000, guid: 64c58b9e5facd7d419659f91cf651367, type: 2}

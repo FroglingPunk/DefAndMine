@@ -1,7 +1,6 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace Contstructor
+namespace Constructor
 {
     public class PrefabsArchive : MonoBehaviour
     {
@@ -27,28 +26,42 @@ namespace Contstructor
         }
 
 
-        [SerializeField] private Module[] modules;
-        [SerializeField] private Block[] blocks;
+        [SerializeField] private Structures.ModuleBuildingData[] structuresModulesData;
+        [SerializeField] private Structures.BlockBuildingData[] structuresBlocksData;
+
+        [SerializeField] private Units.ModuleBuildingData[] unitsModulesData;
 
 
-        public Module GetModule(int id)
+        public Structures.ModuleBuildingData[] StructuresModulesData => structuresModulesData;
+        public Structures.BlockBuildingData[] StructuresBlocksData => structuresBlocksData;
+
+        public Units.ModuleBuildingData[] UnitsModulesData => unitsModulesData;
+
+
+        public Structures.ModuleBuildingData GetStructureModuleData(int id)
         {
-            return id < modules.Length ? modules[id] : null;
+            return id < structuresModulesData.Length ? structuresModulesData[id] : null;
         }
 
-        public Block GetBlock(int id)
+        public Structures.BlockBuildingData GetStructureBlock(int id)
         {
-            return id < blocks.Length ? blocks[id] : null;
+            return id < structuresBlocksData.Length ? structuresBlocksData[id] : null;
         }
 
-        public int GetIndex(Module module)
+        public Units.ModuleBuildingData GetUnitModuleData(int id)
         {
-            string moduleName = module.gameObject.name;
+            return id < unitsModulesData.Length ? unitsModulesData[id] : null;
+        }
+
+
+        public int GetIndex(Structures.Module structureModule)
+        {
+            string moduleName = structureModule.gameObject.name;
             moduleName = moduleName.Remove(moduleName.IndexOf(("(Clone)")));
 
-            for (int i = 0; i < modules.Length; i++)
+            for (int i = 0; i < structuresModulesData.Length; i++)
             {
-                if (modules[i].gameObject.name == moduleName)
+                if (structuresModulesData[i].Prefab.name == moduleName)
                 {
                     return i;
                 }
@@ -57,14 +70,27 @@ namespace Contstructor
             return -1;
         }
 
-        public int GetIndex(Block block)
+        public int GetIndex(Structures.Block structureBlock)
         {
-            string blockName = block.gameObject.name;
+            string blockName = structureBlock.gameObject.name;
             blockName = blockName.Remove(blockName.IndexOf(("(Clone)")));
 
-            for(int i = 0; i < blocks.Length; i++)
+            for (int i = 0; i < structuresBlocksData.Length; i++)
             {
-                if(blocks[i].gameObject.name == blockName)
+                if (structuresBlocksData[i].Prefab.name == blockName)
+                {
+                    return i;
+                }
+            }
+
+            return -1;
+        }
+
+        public int GetIndex(Units.ModuleBuildingData unitModule)
+        {
+            for (int i = 0; i < unitsModulesData.Length; i++)
+            {
+                if (unitsModulesData[i].name == unitModule.name)
                 {
                     return i;
                 }
