@@ -9260,7 +9260,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &457631695
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17710,14 +17710,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1251977714}
     m_Modifications:
-    - target: {fileID: 1864840046505020, guid: 1b9539d3a83add242bc52578ef007a69, type: 3}
-      propertyPath: m_Name
-      value: Robo2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1864840046505020, guid: 1b9539d3a83add242bc52578ef007a69, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 4483312203818436, guid: 1b9539d3a83add242bc52578ef007a69, type: 3}
       propertyPath: m_LocalPosition.x
       value: 12.931538
@@ -17773,6 +17765,14 @@ PrefabInstance:
     - target: {fileID: 4483312203818436, guid: 1b9539d3a83add242bc52578ef007a69, type: 3}
       propertyPath: m_LocalScale.z
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1864840046505020, guid: 1b9539d3a83add242bc52578ef007a69, type: 3}
+      propertyPath: m_Name
+      value: Robo2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1864840046505020, guid: 1b9539d3a83add242bc52578ef007a69, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1b9539d3a83add242bc52578ef007a69, type: 3}
@@ -24699,6 +24699,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1468124750}
     m_Modifications:
+    - target: {fileID: 8156128015798458686, guid: 034840fb3ad328442af9ad389cb0d0cf,
+        type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 2567202571380871219, guid: 034840fb3ad328442af9ad389cb0d0cf,
         type: 3}
       propertyPath: m_Name
@@ -24708,11 +24713,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8156128015798458686, guid: 034840fb3ad328442af9ad389cb0d0cf,
-        type: 3}
-      propertyPath: m_Layer
-      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4305915173857229881, guid: 034840fb3ad328442af9ad389cb0d0cf,
         type: 3}
@@ -30604,16 +30604,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1251977714}
     m_Modifications:
-    - target: {fileID: 1279437348525479949, guid: e2e682b966e3f644392ffbfab511e0e2,
-        type: 3}
-      propertyPath: m_Name
-      value: Ground_02
-      objectReference: {fileID: 0}
-    - target: {fileID: 1279437348525479949, guid: e2e682b966e3f644392ffbfab511e0e2,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 1279437348525638701, guid: e2e682b966e3f644392ffbfab511e0e2,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -30667,6 +30657,16 @@ PrefabInstance:
     - target: {fileID: 1279437348525638701, guid: e2e682b966e3f644392ffbfab511e0e2,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1279437348525479949, guid: e2e682b966e3f644392ffbfab511e0e2,
+        type: 3}
+      propertyPath: m_Name
+      value: Ground_02
+      objectReference: {fileID: 0}
+    - target: {fileID: 1279437348525479949, guid: e2e682b966e3f644392ffbfab511e0e2,
+        type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -33720,14 +33720,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1251977714}
     m_Modifications:
-    - target: {fileID: 100000, guid: 2b858557e2e59a748a2c7606a9052648, type: 3}
-      propertyPath: m_Name
-      value: HandLight
-      objectReference: {fileID: 0}
-    - target: {fileID: 100000, guid: 2b858557e2e59a748a2c7606a9052648, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 2b858557e2e59a748a2c7606a9052648, type: 3}
       propertyPath: m_LocalPosition.x
       value: 29
@@ -33783,6 +33775,14 @@ PrefabInstance:
     - target: {fileID: 400000, guid: 2b858557e2e59a748a2c7606a9052648, type: 3}
       propertyPath: m_LocalScale.z
       value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 2b858557e2e59a748a2c7606a9052648, type: 3}
+      propertyPath: m_Name
+      value: HandLight
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 2b858557e2e59a748a2c7606a9052648, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2b858557e2e59a748a2c7606a9052648, type: 3}
@@ -35897,6 +35897,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1468124750}
     m_Modifications:
+    - target: {fileID: 8156128015798458686, guid: 034840fb3ad328442af9ad389cb0d0cf,
+        type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 2567202571380871219, guid: 034840fb3ad328442af9ad389cb0d0cf,
         type: 3}
       propertyPath: m_Name
@@ -35906,11 +35911,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8156128015798458686, guid: 034840fb3ad328442af9ad389cb0d0cf,
-        type: 3}
-      propertyPath: m_Layer
-      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4305915173857229881, guid: 034840fb3ad328442af9ad389cb0d0cf,
         type: 3}
@@ -38058,14 +38058,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1251977714}
     m_Modifications:
-    - target: {fileID: 1903400983757000, guid: 11134d1ebf2bb02409ec4c45871fc2d0, type: 3}
-      propertyPath: m_Name
-      value: Robo3
-      objectReference: {fileID: 0}
-    - target: {fileID: 1903400983757000, guid: 11134d1ebf2bb02409ec4c45871fc2d0, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 4683777739063854, guid: 11134d1ebf2bb02409ec4c45871fc2d0, type: 3}
       propertyPath: m_LocalPosition.x
       value: 11.799999
@@ -38121,6 +38113,14 @@ PrefabInstance:
     - target: {fileID: 4683777739063854, guid: 11134d1ebf2bb02409ec4c45871fc2d0, type: 3}
       propertyPath: m_LocalScale.z
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1903400983757000, guid: 11134d1ebf2bb02409ec4c45871fc2d0, type: 3}
+      propertyPath: m_Name
+      value: Robo3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1903400983757000, guid: 11134d1ebf2bb02409ec4c45871fc2d0, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 11134d1ebf2bb02409ec4c45871fc2d0, type: 3}
@@ -39506,7 +39506,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2003977752
 Transform:
   m_ObjectHideFlags: 0
@@ -41648,16 +41648,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1251977714}
     m_Modifications:
-    - target: {fileID: 7072444061591711186, guid: 910177ec26b76c14996c2d53627a6def,
-        type: 3}
-      propertyPath: m_Name
-      value: PolyartCharacter
-      objectReference: {fileID: 0}
-    - target: {fileID: 7072444061591711186, guid: 910177ec26b76c14996c2d53627a6def,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 7072444061591351794, guid: 910177ec26b76c14996c2d53627a6def,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -41727,6 +41717,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.y
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7072444061591711186, guid: 910177ec26b76c14996c2d53627a6def,
+        type: 3}
+      propertyPath: m_Name
+      value: PolyartCharacter
+      objectReference: {fileID: 0}
+    - target: {fileID: 7072444061591711186, guid: 910177ec26b76c14996c2d53627a6def,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7072444061591351702, guid: 910177ec26b76c14996c2d53627a6def,
         type: 3}

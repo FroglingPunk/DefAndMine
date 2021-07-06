@@ -8,4 +8,11 @@ public class Elemental : Battler
 
 
     public EElementalType Element => element;
+
+
+
+    public void Morph(EElementalType newElement)
+    {
+
+    }
 }
