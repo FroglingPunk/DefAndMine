@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &6979369643165328715
+--- !u!1 &68789589520032402
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,8 +8,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 2315509061877016660}
-  - component: {fileID: 9087109067750391544}
+  - component: {fileID: 799954706552812243}
+  - component: {fileID: 1959871072558317341}
   m_Layer: 0
   m_Name: PrefabsArchive
   m_TagString: Untagged
@@ -17,13 +17,13 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &2315509061877016660
+--- !u!4 &799954706552812243
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6979369643165328715}
+  m_GameObject: {fileID: 68789589520032402}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -31,25 +31,27 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &9087109067750391544
+--- !u!114 &1959871072558317341
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6979369643165328715}
+  m_GameObject: {fileID: 68789589520032402}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8ce4d66d4bcdbb04595c565f085af29f, type: 3}
+  m_Script: {fileID: 11500000, guid: b8b5d17a5a144854297bf62f7ee628ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  structuresModulesData:
-  - {fileID: 11400000, guid: f5bb6b86c5fe14d4aa74a7069d10c1cc, type: 2}
-  - {fileID: 11400000, guid: 9e63b68a996d00f45b4e37bbc9fe1595, type: 2}
-  structuresBlocksData:
-  - {fileID: 11400000, guid: 35b8cf448e2231e4da765e123e926879, type: 2}
-  unitsModulesData:
-  - {fileID: 11400000, guid: 7660fa3e0d89649428ac91e9c4577f71, type: 2}
-  - {fileID: 11400000, guid: a054b6fb5121736418ccfec49c9e8a5a, type: 2}
-  - {fileID: 11400000, guid: 1b5b1a3b830fe8f45acdc9006c017e02, type: 2}
-  - {fileID: 11400000, guid: 64c58b9e5facd7d419659f91cf651367, type: 2}
+  elementsSprites:
+    keyData: 020000000300000004000000
+    valueData:
+    - {fileID: 21300000, guid: 8bc6eddd271bcbc4cb29b7e805886aae, type: 3}
+    - {fileID: 21300000, guid: 905aefa8652570842be8659ac40217a5, type: 3}
+    - {fileID: 21300000, guid: 9a8ad968e4be589449263151b9b6739e, type: 3}
+  elementalsBehaviours:
+    keyData: 020000000400000003000000
+    valueData:
+    - {fileID: 11400000, guid: 6fae28bb282d6e642b87e6f325dec4af, type: 2}
+    - {fileID: 11400000, guid: f301382d41e5ae343b36ff7ac32467a6, type: 2}
+    - {fileID: 11400000, guid: 09d2ce1d55f5341438f94df4c0d224bc, type: 2}

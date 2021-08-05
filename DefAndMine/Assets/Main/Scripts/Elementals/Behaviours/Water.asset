@@ -1,0 +1,52 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab9fbbdb16d69b1489429b6fa18ae42f, type: 3}
+  m_Name: Water
+  m_EditorClassIdentifier: 
+  elementalElement: 3
+  reactions:
+  - element: 2
+    reactions:
+    - reactType: 2
+      multiply: -1
+      morphElement: 4
+    - reactType: 0
+      multiply: 0.5
+      morphElement: 0
+  - element: 3
+    reactions:
+    - reactType: 1
+      multiply: 1
+      morphElement: 0
+  - element: 4
+    reactions:
+    - reactType: 2
+      multiply: 1
+      morphElement: 4
+  - element: 7
+    reactions:
+    - reactType: 2
+      multiply: -1
+      morphElement: 4
+    - reactType: 0
+      multiply: 1
+      morphElement: 0
+  - element: 11
+    reactions:
+    - reactType: 2
+      multiply: -0.5
+      morphElement: 4
+  - element: 12
+    reactions:
+    - reactType: 0
+      multiply: 1.5
+      morphElement: 0

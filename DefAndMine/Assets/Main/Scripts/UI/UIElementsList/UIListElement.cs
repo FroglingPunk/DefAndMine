@@ -4,7 +4,7 @@ using System;
 
 namespace UIElementsList
 {
-    public abstract class UIListElement : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
+    public class UIListElement : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
     {
         public object Data { get; private set; }
 
