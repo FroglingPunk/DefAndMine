@@ -74,26 +74,26 @@ public class ElementalBehaviour : ScriptableObject
 
         return false;
     }
-}
 
-[Serializable]
-public class ElementReaction
-{
-    public EElement element;
-    public Reaction[] reactions;
-}
+    [Serializable]
+    public class ElementReaction
+    {
+        public EElement element;
+        public Reaction[] reactions;
+    }
 
-[Serializable]
-public class Reaction
-{
-    public EReact reactType;
-    public float multiply;
-    public EElement morphElement;
-}
+    [Serializable]
+    public class Reaction
+    {
+        public EReact reactType;
+        public float multiply;
+        public EElement morphElement;
+    }
 
-public enum EReact
-{
-    GetDamage,
-    Heal,
-    Morph
+    public enum EReact
+    {
+        GetDamage,
+        Heal,
+        Morph
+    }
 }
