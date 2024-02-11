@@ -1,5 +1,6 @@
 # [Obsolete] DefAndMine
 
+Inspired by planetary battles from the game Space Rangers 2.
 A draft of a game in which two players had to destroy their opponent's base.
 The player could build robots and towers to protect against enemy robots, extract resources from map cells, thereby changing the map itself.
 
