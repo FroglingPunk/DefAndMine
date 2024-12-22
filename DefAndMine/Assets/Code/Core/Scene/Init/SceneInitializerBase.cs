@@ -9,6 +9,9 @@ public abstract class SceneInitializerBase : MonoBehaviour
         if (GetType() != typeof(InitSceneInitializer) && GlobalContainer.Instance == null)
         {
             await InitSceneInitializer.DebugInitAsync();
+            
+            var localSceneContainer = new LocalSceneContainer(this);
+            await localSceneContainer.InitAsync();
         }
 #endif
     }

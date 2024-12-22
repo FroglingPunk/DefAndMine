@@ -20,26 +20,28 @@ public class ControllersContainer
         return controller;
     }
 
-    public void AddControllerAs<T, U>(T controller) where T : IController
+    public T AddControllerAs<T, U>(T controller) where T : IController
     {
         if (_controllers.ContainsKey(typeof(U)))
         {
             Debug.LogError($"Controllers container already contains {typeof(T)} controller as {typeof(U)}");
-            return;
+            return controller;
         }
 
         _controllers.Add(typeof(U), controller);
+        return controller;
     }
 
-    public void AddControllerAs(IController controller, Type type)
+    public IController AddControllerAs(IController controller, Type type)
     {
         if (_controllers.ContainsKey(type))
         {
             Debug.LogError($"Controllers container already contains {type} controller");
-            return;
+            return controller;
         }
 
         _controllers.Add(type, controller);
+        return controller;
     }
 
     public T CreateMonoController<T>() where T : MonoControllerBase

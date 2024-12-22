@@ -36,24 +36,24 @@ public class ViewModeManager : MonoBehaviour
 
         if (previousMode == EViewMode.Wiring)
         {
-            Field.Instance.ActionAllCells(CellWiringBuilder.HideWiring);
-            CellWiringBuilder.RebuildIfCellWiringChanged = false;
+            // Field.Instance.ActionAllCells(CellWiringBuilder.HideWiring);
+            // CellWiringBuilder.RebuildIfCellWiringChanged = false;
         }
         else if (previousMode == EViewMode.Power)
         {
-            Field.Instance.ActionAllCells(CellPowerViewer.HidePower);
-            CellPowerViewer.ShowIfCellPowerChanged = false;
+            // Field.Instance.ActionAllCells(CellPowerViewer.HidePower);
+            // CellPowerViewer.ShowIfCellPowerChanged = false;
         }
 
         if (currentMode == EViewMode.Wiring)
         {
-            CellWiringBuilder.RebuildIfCellWiringChanged = true;
-            Field.Instance.ActionAllCells(CellWiringBuilder.RebuildWiring);
+            // CellWiringBuilder.RebuildIfCellWiringChanged = true;
+            // Field.Instance.ActionAllCells(CellWiringBuilder.RebuildWiring);
         }
         else if (currentMode == EViewMode.Power)
         {
-            CellPowerViewer.ShowIfCellPowerChanged = true;
-            Field.Instance.ActionAllCells(CellPowerViewer.ShowPower);
+            // CellPowerViewer.ShowIfCellPowerChanged = true;
+            // Field.Instance.ActionAllCells(CellPowerViewer.ShowPower);
         }
     }
 
