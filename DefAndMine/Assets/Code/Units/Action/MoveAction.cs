@@ -8,16 +8,16 @@ public class MoveAction : UnitAction
 {
     public override async UniTask<UnitActionContext> CreateContextAsync(Unit unit, CancellationToken cancellationToken)
     {
-        var possibleForMoveCells = Field.Instance.SetEchoHighlight(unit.Cell, unit.MovementDistance, true);
+        var possibleForMoveCells = Field.Instance.SetEchoHighlight(unit.Cell, unit.MovementDistance, EHighlightState.PossibleTarget);
 
-        var raycastPointer = new RaycastPointer<Cell>();
+        var raycastPointer = new RaycastPointer<CellView>();
         var selectedCell = (Cell)null;
 
-        raycastPointer.OnClick.Subscribe(cell =>
+        raycastPointer.OnClick.Subscribe(cellView =>
         {
-            if (possibleForMoveCells.Contains(cell))
+            if (possibleForMoveCells.Contains(cellView.Cell))
             {
-                selectedCell = cell;
+                selectedCell = cellView.Cell;
             }
         });
 
@@ -30,13 +30,13 @@ public class MoveAction : UnitAction
             catch
             {
                 raycastPointer.Dispose();
-                Field.Instance.SetCellsHighlightState(false);
+                Field.Instance.SetCellsHighlightState(EHighlightState.None);
                 return null;
             }
         }
 
         raycastPointer.Dispose();
-        Field.Instance.SetCellsHighlightState(false);
+        Field.Instance.SetCellsHighlightState(EHighlightState.None);
 
         return new UnitActionContext
         {

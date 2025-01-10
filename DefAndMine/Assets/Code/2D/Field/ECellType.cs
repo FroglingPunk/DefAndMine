@@ -2,5 +2,7 @@ public enum ECellType
 {
     Grass,
     Water,
-    Mountain
+    Sand,
+    Swamp,
+    MarsSoil
 }

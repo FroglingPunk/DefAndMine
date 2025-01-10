@@ -1,9 +1,11 @@
 using System.Collections.Generic;
-using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class Field : MonoBehaviour
 {
+    public const int Width = 8;
+    public const int Length = 8;
+    
     public static Field Instance
     {
         get
@@ -19,53 +21,57 @@ public class Field : MonoBehaviour
 
     private static Field _instance;
     
-    [SerializeField] private float _rotationTime = 1f;
-    [SerializeField] private Transform _cellsParent;
+    [SerializeField] private CellView _cellViewPrefab;
+    [SerializeField] private bool _debugUseRandomField;
     
-    public int Width { get; private set; }
-    public int Length { get; private set; }
-
     private List<Cell> _cells = new();
-    private bool _isRotatingNow;
 
     public Cell this[int x, int z] => (x < 0 || z < 0 || x >= Width || z >= Length) ? null : _cells[z * Width + x];
 
 
+
     private void Start()
     {
-        var prevPosition = _cellsParent.GetChild(0).localPosition;
+        var fieldData = _debugUseRandomField ? FieldDataGenerator.Generate() : FieldDataGenerator.GetClearField();
+        CreateField(fieldData);
+    }
 
-        for (var i = 1; i < _cellsParent.childCount; i++)
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
         {
-            var currentPosition = _cellsParent.GetChild(i).localPosition;
-
-            if (Width == 0 && Mathf.Abs(currentPosition.z - prevPosition.z) >= 0.5f)
+            for (var i = transform.childCount - 1; i >= 0; i--)
             {
-                Width = i;
-                Length = _cellsParent.childCount / Width;
-                break;
+                Destroy(transform.GetChild(i).gameObject);
+            }
+            
+            _cells.Clear();
+
+            var fieldData = _debugUseRandomField ? FieldDataGenerator.Generate() : FieldDataGenerator.GetClearField();
+            CreateField(fieldData);
+        }
+    }
+
+
+    private void CreateField(FieldData fieldData)
+    {
+        for (var z = 0; z < Length; z++)
+        {
+            for (var x = 0; x < Width; x++)
+            {
+                var id = (x + z * Width) * 2;
+                
+                var type = (ECellType)fieldData.cellsData[id];
+                var height = (ECellHeight)fieldData.cellsData[id + 1];
+                var cellView = Instantiate(_cellViewPrefab, transform);
+                cellView.transform.localPosition = new Vector3(x, 0, z);
+
+                var cell = new Cell(cellView, x, z, type, height);
+                _cells.Add(cell);
             }
         }
-
-        for (var i = 0; i < _cellsParent.childCount; i++)
-        {
-            var cellTransform = _cellsParent.GetChild(i);
-
-            var cell = cellTransform.GetComponent<Cell>();
-            cell.Init(i % Width, i / Length);
-            _cells.Add(cell);
-        }
     }
-
-    public void Rotate(bool clockwise)
-    {
-        if (_isRotatingNow)
-        {
-            return;
-        }
-
-        RotateAsync(clockwise).Forget();
-    }
+    
 
     public bool TryGetFirstStructureByDirection<T>(Cell origin, EDirection direction, out T structure)
         where T : IStructure
@@ -75,7 +81,7 @@ public class Field : MonoBehaviour
 
         for (var i = 1; i <= rayLength; i++)
         {
-            var nextCell = this[origin.X + delta.x * i, origin.Z + delta.y * i];
+            var nextCell = this[origin.PosX + delta.x * i, origin.PosZ + delta.y * i];
 
             if (nextCell == null)
             {
@@ -109,33 +115,15 @@ public class Field : MonoBehaviour
         return structures;
     }
 
-    public void SetCellsHighlightState(bool state)
+    public void SetCellsHighlightState(EHighlightState state)
     {
         _cells.ForEach(c => c.SetHighlightState(state));
     }
 
-    public List<Cell> SetEchoHighlight(Cell cell, int distance, bool state)
+    public List<Cell> SetEchoHighlight(Cell cell, int distance, EHighlightState state)
     {
         var echoCells = cell.Echo(distance);
         echoCells.ForEach(c => c.SetHighlightState(state));
         return echoCells;
-    }
-    
-    private async UniTask RotateAsync(bool clockwise)
-    {
-        _isRotatingNow = true;
-
-        var startEuler = transform.localEulerAngles;
-        var endEuler = startEuler + new Vector3(0, clockwise ? 90f : -90f, 0f);
-
-        for (var lerp = 0f; lerp < 1f; lerp += Time.deltaTime / _rotationTime)
-        {
-            transform.localEulerAngles = Vector3.Lerp(startEuler, endEuler, lerp);
-            await UniTask.Yield();
-        }
-
-        transform.localEulerAngles = endEuler;
-
-        _isRotatingNow = false;
     }
 }

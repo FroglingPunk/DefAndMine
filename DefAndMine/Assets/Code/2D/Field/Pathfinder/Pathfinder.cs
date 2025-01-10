@@ -46,11 +46,11 @@ public static class Pathfinder
 
     public static bool TryBuildPath(this Cell from, Cell to, out List<Cell> path)
     {
-        var cellsMoveCost = new int[Field.Instance.Width, Field.Instance.Length];
+        var cellsMoveCost = new int[Field.Width, Field.Length];
         var currentCycleCells = new List<Cell> { from };
         var nextCycleCells = new List<Cell>();
 
-        for (var i = 1; i < Field.Instance.Width * Field.Instance.Length && cellsMoveCost[to.X, to.Z] == 0; i++)
+        for (var i = 1; i < Field.Width * Field.Length && cellsMoveCost[to.PosX, to.PosZ] == 0; i++)
         {
             currentCycleCells.ForEach(c =>
             {
@@ -70,7 +70,7 @@ public static class Pathfinder
             nextCycleCells.Clear();
         }
 
-        if (cellsMoveCost[to.X, to.Z] == 0)
+        if (cellsMoveCost[to.PosX, to.PosZ] == 0)
         {
             path = null;
             return false;
@@ -79,7 +79,7 @@ public static class Pathfinder
         path = new List<Cell> { to };
         var currentCell = to;
 
-        for (var i = cellsMoveCost[to.X, to.Z] - 1; i > 0; i--)
+        for (var i = cellsMoveCost[to.PosX, to.PosZ] - 1; i > 0; i--)
         {
             for (var dir = EDirection.N; dir < EDirection.NW; dir += 2)
             {
@@ -99,7 +99,7 @@ public static class Pathfinder
         {
             var neighbour = cell.Neighbour(direction);
 
-            if (neighbour != null && cellsMoveCost[neighbour.X, neighbour.Z] == needMoveCost)
+            if (neighbour != null && cellsMoveCost[neighbour.PosX, neighbour.PosZ] == needMoveCost)
             {
                 pathCell = neighbour;
                 return true;
@@ -113,10 +113,10 @@ public static class Pathfinder
         {
             var neighbour = cell.Neighbour(direction);
 
-            if (neighbour != null && cellsMoveCost[neighbour.X, neighbour.Z] == 0 && neighbour.Unit == null)
+            if (neighbour != null && cellsMoveCost[neighbour.PosX, neighbour.PosZ] == 0 && neighbour.Unit == null)
             {
                 nextCycleCells.Add(neighbour);
-                cellsMoveCost[neighbour.X, neighbour.Z] = moveCost;
+                cellsMoveCost[neighbour.PosX, neighbour.PosZ] = moveCost;
             }
         }
     }

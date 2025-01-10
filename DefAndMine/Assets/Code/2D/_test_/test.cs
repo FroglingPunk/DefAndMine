@@ -15,12 +15,16 @@ public class test : MonoBehaviour
     private readonly Dictionary<Cell, IDisposable> _transformDisposables = new();
 
 
+    private void Awake()
+    {
+        new BattleTurnSystem(_units);
+    }
+
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.C))
         {
-            var battleSystem = new BattleTurnSystem(_units);
-            battleSystem.StartBattle();
+            BattleTurnSystem.Instance.StartBattle();
             enabled = false;
         }
 
@@ -80,8 +84,8 @@ public class test : MonoBehaviour
             }
             
             var prefab = input == 1 ? (Structure)_powerTransitPrefab : _powerSourcePrefab;
-            var structure = Instantiate(prefab, cell.transform);
-            structure.Init(cell);
+            // var structure = Instantiate(prefab, cell.transform);
+            // structure.Init(cell);
             _powerLineBuilder.UpdateView();
         }
         else if (mode == 2)
@@ -102,8 +106,9 @@ public class test : MonoBehaviour
 
         if (Physics.Raycast(ray, out var hit))
         {
-            if (hit.collider.TryGetComponent<Cell>(out  cell))
+            if (hit.collider.TryGetComponent<CellView>(out var cellView))
             {
+                cell = cellView.Cell;
                 return true;
             }
         }

@@ -1,6 +1,6 @@
 ﻿public enum ETeam
 {
     Player,
-    Neutral,
+    // Neutral,
     Enemy
 }

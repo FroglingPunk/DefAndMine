@@ -53,23 +53,23 @@ public static class EDirectionExtensions
 
     public static EDirection Direction(this Cell from, Cell to)
     {
-        if (from.Z == to.Z)
+        if (from.PosZ == to.PosZ)
         {
-            return to.X > from.X ? EDirection.E : EDirection.W;
+            return to.PosX > from.PosX ? EDirection.E : EDirection.W;
         }
 
-        if (from.X == to.X)
+        if (from.PosX == to.PosX)
         {
-            return to.Z > from.Z ? EDirection.N : EDirection.S;
+            return to.PosZ > from.PosZ ? EDirection.N : EDirection.S;
         }
 
-        var xOffset = to.X > from.X ? to.X - from.X : from.X - to.X;
-        var zOffset = to.Z > from.Z ? to.Z - from.Z : from.Z - to.Z;
+        var xOffset = to.PosX > from.PosX ? to.PosX - from.PosX : from.PosX - to.PosX;
+        var zOffset = to.PosZ > from.PosZ ? to.PosZ - from.PosZ : from.PosZ - to.PosZ;
 
         var magnitude = UnityEngine.Mathf.Sqrt(xOffset * xOffset + zOffset * zOffset);
         var sin = zOffset / magnitude;
 
-        if (to.X > from.X)
+        if (to.PosX > from.PosX)
         {
             if (sin <= 0.5f)
             {
@@ -78,10 +78,10 @@ public static class EDirectionExtensions
 
             if (sin <= 0.70f)
             {
-                return to.Z > from.Z ? EDirection.NE : EDirection.SE;
+                return to.PosZ > from.PosZ ? EDirection.NE : EDirection.SE;
             }
 
-            return to.Z > from.Z ? EDirection.E : EDirection.S;
+            return to.PosZ > from.PosZ ? EDirection.E : EDirection.S;
         }
 
         if (sin <= 0.5f)
@@ -91,10 +91,10 @@ public static class EDirectionExtensions
 
         if (sin <= 0.707f)
         {
-            return to.Z > from.Z ? EDirection.NW : EDirection.SW;
+            return to.PosZ > from.PosZ ? EDirection.NW : EDirection.SW;
         }
 
-        return to.Z > from.Z ? EDirection.N : EDirection.S;
+        return to.PosZ > from.PosZ ? EDirection.N : EDirection.S;
     }
 
     public static EDirection Next(this EDirection direction)

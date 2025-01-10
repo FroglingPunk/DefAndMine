@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerUnitTurnController : IUnitTurnController
 {
-    public async UniTask ExecuteAsync(Unit unit)
+    public async UniTask ExecuteAsync(Unit unit, EBattleStage stage)
     {
         var unitActionsPanel = Object.FindObjectOfType<UnitActionsPanel>(true);
         unitActionsPanel.Show(unit);

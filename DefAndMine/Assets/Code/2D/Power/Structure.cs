@@ -8,13 +8,13 @@ public abstract class Structure : MonoBehaviour, IStructure
     public virtual void Init(Cell cell)
     {
         Cell = cell;
-        Cell.SetStructure(this);
-        transform.position = cell.transform.position;
+        Cell.Structure = this;
+        // transform.position = cell.transform.position;
     }
 
     public virtual void Demolish()
     {
-        Cell.SetStructure(null);
+        Cell.Structure = null;
         Destroy(gameObject);
     }
 

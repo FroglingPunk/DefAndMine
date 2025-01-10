@@ -48,7 +48,7 @@ public class PowerLineBuilder : MonoBehaviour
 
             var line = GetLine();
             var linePoints = new List<Vector3>();
-            rayCells.ForEach(rc => linePoints.Add(rc.transform.position));
+            // rayCells.ForEach(rc => linePoints.Add(rc.transform.position));
             line.positionCount = linePoints.Count;
             line.SetPositions(linePoints.ToArray());
         }

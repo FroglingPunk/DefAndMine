@@ -1,34 +1,57 @@
 using System.Collections.Generic;
-using System.Linq;
 using Cysharp.Threading.Tasks;
+using UniRx;
 using UnityEngine;
 
 public class BattleTurnSystem
 {
-    private List<Unit> _units;
-    private int _currentRound;
+    public static BattleTurnSystem Instance { get; private set; }
 
-    private IUnitTurnController _playerTurnController = new PlayerUnitTurnController();
-    private IUnitTurnController _aiUnitTurnController = new AIUnitTurnController();
+    public ReactiveProperty<int> RoundNumber { get; private set; } = new();
+    public ReactiveProperty<EBattleStage> Stage { get; private set; } = new();
+
 
     private Unit[] _unitTemplates;
+    private BattleActorsList _actorsList;
+
 
     public BattleTurnSystem(Unit[] unitTemplates)
     {
+        Instance = this;
         _unitTemplates = unitTemplates;
     }
 
     public void StartBattle()
     {
+        var units = new List<Unit>();
+
+        for (var i = 0; i < _unitTemplates.Length; i++)
+        {
+            var template = _unitTemplates[i];
+
+            for (var p = 0; p < 1; p++)
+            {
+                var unit = Object.Instantiate(template);
+                var team = (ETeam)i;
+                var cell = GetRandomFreeCell();
+                unit.Init(team, cell);
+                units.Add(unit);
+            }
+        }
+
+        _actorsList = new(units);
+        _ = BattleCycle();
+
+
         Cell GetRandomFreeCell()
         {
-            for (var i = 0; i < Field.Instance.Width * Field.Instance.Length; i++)
+            for (var i = 0; i < Field.Width * Field.Length; i++)
             {
-                var x = Random.Range(0, Field.Instance.Width);
-                var z = Random.Range(0, Field.Instance.Length);
+                var x = Random.Range(0, Field.Width);
+                var z = Random.Range(0, Field.Length);
                 var cell = Field.Instance[x, z];
 
-                if (_units.Find(u => u.Cell == cell) == null)
+                if (units.Find(u => u.Cell == cell) == null)
                 {
                     return cell;
                 }
@@ -36,58 +59,35 @@ public class BattleTurnSystem
 
             return null;
         }
-
-        _units = new List<Unit>();
-
-        for (var i = 0; i < _unitTemplates.Length; i++)
-        {
-            var template = _unitTemplates[i];
-
-            for (var p = 0; p < 2; p++)
-            {
-                var unit = Object.Instantiate(template);
-                var team = (ETeam)i;
-                var cell = GetRandomFreeCell();
-                unit.Init(team, cell);
-                _units.Add(unit);
-            }
-        }
-
-        _ = BattleCycle();
     }
 
     private async UniTask BattleCycle()
     {
         while (true)
         {
-            _currentRound++;
+            RoundNumber.Value++;
             await RoundCycle();
         }
     }
 
     private async UniTask RoundCycle()
     {
-        var neutralEnemyUnits = _units.Where(u => u.Team == ETeam.Enemy || u.Team == ETeam.Neutral).ToList();
-        neutralEnemyUnits.Sort((u1, u2) => u1.MovePriority - u2.MovePriority);
-
-        for (var i = 0; i < neutralEnemyUnits.Count; i++)
+        for (var stage = EBattleStage.RoundStart; stage <= EBattleStage.RoundEnd; stage++)
         {
-            var unit = neutralEnemyUnits[i];
-            await _aiUnitTurnController.ExecuteAsync(unit);
-        }
+            Stage.Value = stage;
+            var actors = _actorsList.GetActorsByStage(stage);
 
-        var playerUnits = _units.Where(u => u.Team == ETeam.Player).ToList();
+            if (actors == null || actors.Count == 0)
+            {
+                continue;
+            }
 
-        for (var i = 0; i < playerUnits.Count; i++)
-        {
-            var unit = playerUnits[i];
-            await _playerTurnController.ExecuteAsync(unit);
-        }
+            for (var i = 0; i < actors.Count; i++)
+            {
+                await actors[i].ExecuteTurnAsync(stage);
+            }
 
-        for (var i = 0; i < neutralEnemyUnits.Count; i++)
-        {
-            var unit = neutralEnemyUnits[i];
-            await _aiUnitTurnController.ExecuteAsync(unit);
+            await UniTask.WaitForSeconds(1f);
         }
     }
 }
