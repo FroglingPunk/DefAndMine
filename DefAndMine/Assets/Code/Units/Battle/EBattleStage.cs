@@ -1,8 +1,8 @@
 public enum EBattleStage
 {
     RoundStart,
-    PreparingDeferred,
+    NonPlayerTurnPreparing,
     PlayerTurn,
-    ExecutionDeferred,
+    NonPlayerTurnExecution,
     RoundEnd
 }

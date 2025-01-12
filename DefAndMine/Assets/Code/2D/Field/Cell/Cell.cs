@@ -5,7 +5,6 @@ public class Cell : ICell
     private readonly CellView _view;
 
     public Unit Unit { get; set; }
-    public IStructure Structure { get; set; }
     public int PosX { get; private set; }
     public int PosZ { get; private set; }
     public ECellType Type { get; set; }
@@ -14,7 +13,8 @@ public class Cell : ICell
     public Transform Transform => _view.transform;
 
 
-    public Cell(CellView view, int posX, int posZ, ECellType type, ECellHeight height)
+    public Cell(CellView view, int posX, int posZ, ECellType type, ECellHeight height, ECellContent contentType,
+        EDirection contentDirection)
     {
         _view = view;
         PosX = posX;
@@ -23,6 +23,13 @@ public class Cell : ICell
         Height = height;
 
         view.Init(this);
+
+        if (contentType != ECellContent.None)
+        {
+            var contentTemplate = CellContentStorage.GetContentTemplate(contentType);
+            Content = Object.Instantiate(contentTemplate, Transform).GetComponent<ICellContent>();
+            Content.Init(this, contentDirection);
+        }
     }
 
     public void SetHighlightState(EHighlightState state)

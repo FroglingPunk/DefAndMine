@@ -6,30 +6,21 @@ using UnityEngine;
 
 public class test : MonoBehaviour
 {
+    [SerializeField] private BattleData _battleData;
     [SerializeField] private CellTransformerBase[] _transformers;
-    [SerializeField] private Unit[] _units;
-    [SerializeField] private PowerSource _powerSourcePrefab;
-    [SerializeField] private PowerTransit _powerTransitPrefab;
-    [SerializeField] private PowerLineBuilder _powerLineBuilder;
     
     private readonly Dictionary<Cell, IDisposable> _transformDisposables = new();
-
-
-    private void Awake()
-    {
-        new BattleTurnSystem(_units);
-    }
+    
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.C))
         {
-            BattleTurnSystem.Instance.StartBattle();
+            BattleTurnSystem.Instance.StartBattle(_battleData);
             enabled = false;
         }
 
         UpdateTransforms();
-        UpdatePowerStructures();
     }
 
 
@@ -51,53 +42,6 @@ public class test : MonoBehaviour
                 _transformDisposables[cell]?.Dispose();
                 _transformDisposables.Remove(cell);
             }));
-    }
-
-    private void UpdatePowerStructures()
-    {
-        var input = Input.GetMouseButtonDown(0) ? 1 :
-            Input.GetMouseButtonDown(1) ? 2 : 0;
-
-        if (input == 0 || !TryRaycastCell(out var cell))
-        {
-            return;
-        }
-
-        var mode = Input.GetKey(KeyCode.LeftControl) ? 1 :
-            Input.GetKey(KeyCode.LeftAlt) ? 2 : 0;
-
-        if (mode == 0)
-        {
-            if (cell.Structure == null)
-            {
-                return;
-            }
-            
-            cell.Structure.Rotate(input == 1);
-            _powerLineBuilder.UpdateView();
-        }
-        else if (mode == 1)
-        {
-            if (cell.Structure != null)
-            {
-                return;
-            }
-            
-            var prefab = input == 1 ? (Structure)_powerTransitPrefab : _powerSourcePrefab;
-            // var structure = Instantiate(prefab, cell.transform);
-            // structure.Init(cell);
-            _powerLineBuilder.UpdateView();
-        }
-        else if (mode == 2)
-        {
-            if (cell.Structure == null)
-            {
-                return;
-            }
-            
-            cell.Structure.Demolish();
-            _powerLineBuilder.UpdateView();
-        }
     }
     
     private bool TryRaycastCell(out Cell cell)

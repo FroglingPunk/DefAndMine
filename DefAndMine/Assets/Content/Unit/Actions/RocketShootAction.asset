@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46ae6f4c34119b244903c2060c3ae419, type: 3}
+  m_Name: RocketShootAction
+  m_EditorClassIdentifier: 
+  <Icon>k__BackingField: {fileID: 21300000, guid: 303a9cecb0a7d1a4e9e1cb436ed64137,
+    type: 3}
+  <Name>k__BackingField: "\u0420\u0430\u043A\u0435\u0442\u043D\u044B\u0439 \u0432\u044B\u0441\u0442\u0440\u0435\u043B"
+  _rocketTemplate: {fileID: 4099909865024772129, guid: daddb933a25afdf498d110ad0e7ccd87,
+    type: 3}

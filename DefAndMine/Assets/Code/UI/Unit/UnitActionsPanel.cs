@@ -5,7 +5,9 @@ using UnityEngine.UI;
 
 public class UnitActionsPanel : MonoBehaviour
 {
+    [SerializeField] private SkipAction _skipAction;
     [SerializeField] private Button _buttonCancelAction;
+    [SerializeField] private Button _buttonSkipAction;
     [SerializeField] private UnitActionElement _elementPrefab;
     [SerializeField] private RectTransform _elementsParent;
 
@@ -18,6 +20,7 @@ public class UnitActionsPanel : MonoBehaviour
     private void Start()
     {
         _buttonCancelAction.onClick.AddListener(() => OnElementClick(null));
+        _buttonSkipAction.onClick.AddListener(() => { OnActionSelect?.Invoke(_skipAction); });
     }
 
 
@@ -37,6 +40,7 @@ public class UnitActionsPanel : MonoBehaviour
     {
         gameObject.SetActive(false);
         _buttonCancelAction.gameObject.SetActive(false);
+        _buttonSkipAction.gameObject.SetActive(true);
     }
 
     public void Clear()
@@ -76,6 +80,7 @@ public class UnitActionsPanel : MonoBehaviour
     private void OnElementClick(UnitActionElement element)
     {
         _buttonCancelAction.gameObject.SetActive(element != null);
+        _buttonSkipAction.gameObject.SetActive(element == null);
         OnActionSelect?.Invoke(element == null ? null : element.Action);
     }
 }

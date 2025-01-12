@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 public static class Pathfinder
 {
-    public static List<Cell> Echo(this Cell cell, int distance)
+    public static List<Cell> Echo(this Cell cell, Unit unit, int distance)
     {
         var checkedCells = new List<Cell> { cell };
         var echoedCells = new List<Cell>();
@@ -35,7 +35,8 @@ public static class Pathfinder
         {
             var to = from.Neighbour(direction);
 
-            if (to != null && !checkedCells.Contains(to) && to.Unit == null)
+            if (to != null && !checkedCells.Contains(to) && to.Unit == null &&
+                (to.Type != ECellType.Water || unit.CanSwim || unit.CanFly) && (to.Content == null || !to.Content.IsSolid))
             {
                 echoedCells.Add(to);
                 nextCycleCells.Add(to);
@@ -44,7 +45,7 @@ public static class Pathfinder
         }
     }
 
-    public static bool TryBuildPath(this Cell from, Cell to, out List<Cell> path)
+    public static bool TryBuildPath(this Cell from, Cell to, Unit unit, out List<Cell> path)
     {
         var cellsMoveCost = new int[Field.Width, Field.Length];
         var currentCycleCells = new List<Cell> { from };
@@ -113,7 +114,8 @@ public static class Pathfinder
         {
             var neighbour = cell.Neighbour(direction);
 
-            if (neighbour != null && cellsMoveCost[neighbour.PosX, neighbour.PosZ] == 0 && neighbour.Unit == null)
+            if (neighbour != null && cellsMoveCost[neighbour.PosX, neighbour.PosZ] == 0 && neighbour.Unit == null 
+                && (neighbour.Type != ECellType.Water || unit.CanSwim || unit.CanFly) && (to.Content == null || !to.Content.IsSolid))
             {
                 nextCycleCells.Add(neighbour);
                 cellsMoveCost[neighbour.PosX, neighbour.PosZ] = moveCost;

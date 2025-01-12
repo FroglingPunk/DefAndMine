@@ -44,6 +44,9 @@ TagManager:
   - name: Cell
     uniqueID: 1799036427
     locked: 0
+  - name: CellMark
+    uniqueID: 3062712795
+    locked: 0
   - name: Unit
     uniqueID: 4115797143
     locked: 0

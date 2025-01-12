@@ -34,7 +34,7 @@ public class CellView : MonoBehaviour
 
         var cellTypeSprites = CellSpritesStorage.GetCellTypeSprites(type);
 
-        _spriteRenderers[0].sprite = cellTypeSprites.topSprite;
+        _spriteRenderers[0].sprite = cellTypeSprites.topSprite[Random.Range(0, cellTypeSprites.topSprite.Length)];
 
         for (var i = 1; i < 5; i++)
         {

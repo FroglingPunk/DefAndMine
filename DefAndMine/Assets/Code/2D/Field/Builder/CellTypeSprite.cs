@@ -5,7 +5,7 @@ public class CellTypeSprite
 {
     public ECellType type;
 
-    public Sprite topSprite;
+    public Sprite[] topSprite;
     public Sprite sideSprite;
 
     public Color topColor;

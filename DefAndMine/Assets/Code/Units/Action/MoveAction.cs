@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using UniRx;
@@ -6,9 +7,9 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Unit/Actions/Move", fileName = "MoveAction", order = 0)]
 public class MoveAction : UnitAction
 {
-    public override async UniTask<UnitActionContext> CreateContextAsync(Unit unit, CancellationToken cancellationToken)
+    public override async UniTask<UnitActionContext> ManualCreateContextAsync(Unit unit, CancellationToken cancellationToken)
     {
-        var possibleForMoveCells = Field.Instance.SetEchoHighlight(unit.Cell, unit.MovementDistance, EHighlightState.PossibleTarget);
+        var possibleForMoveCells = Field.Instance.SetEchoHighlight(unit, unit.MovementDistance, EHighlightState.PossibleTarget);
 
         var raycastPointer = new RaycastPointer<CellView>();
         var selectedCell = (Cell)null;
@@ -41,19 +42,29 @@ public class MoveAction : UnitAction
         return new UnitActionContext
         {
             sourceUnit = unit,
-            sourceCell = unit.Cell,
+            sourceCell = unit.Cell.Value,
             targetCell = selectedCell
         };
     }
 
+    public override async UniTask<UnitActionContext> AICreateContextAsync(Unit unit)
+    {
+        return default;
+    }
+    
     public override async UniTask ExecuteAsync(UnitActionContext context)
     {
-        if (!context.sourceCell.TryBuildPath(context.targetCell, out var path))
+        if (!context.sourceCell.TryBuildPath(context.targetCell, context.sourceUnit, out var path))
         {
             Debug.LogError("Не удалось построить путь для передвижения юнита");
             return;    
         }
         
         await context.sourceUnit.MoveAsync(path);
+    }
+
+    public override void SetupMarksForDeferredAction(DeferredAction deferredAction, ref CompositeDisposable disposables, ref List<GameObject> marksGo)
+    {
+        
     }
 }

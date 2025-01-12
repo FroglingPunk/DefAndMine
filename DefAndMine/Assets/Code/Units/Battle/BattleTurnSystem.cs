@@ -5,64 +5,105 @@ using UnityEngine;
 
 public class BattleTurnSystem
 {
-    public static BattleTurnSystem Instance { get; private set; }
+    public static BattleTurnSystem Instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                _instance = new BattleTurnSystem();
+            }
+
+            return _instance;
+        }
+    }
+    private static BattleTurnSystem _instance;
 
     public ReactiveProperty<int> RoundNumber { get; private set; } = new();
     public ReactiveProperty<EBattleStage> Stage { get; private set; } = new();
 
+    public DeferredActionsList DeferredActionsList { get; private set; } = new();
+    public UnitsList UnitsList { get; private set; } = new();
+    
+    private AIUnitTurnController _aiTurnController = new();
+    private PlayerUnitTurnController _playerTurnController = new();
 
-    private Unit[] _unitTemplates;
-    private BattleActorsList _actorsList;
+    private BattleData _battleData;
 
 
-    public BattleTurnSystem(Unit[] unitTemplates)
+    public void StartBattle(BattleData battleData)
     {
-        Instance = this;
-        _unitTemplates = unitTemplates;
-    }
+        _battleData = battleData;
 
-    public void StartBattle()
-    {
-        var units = new List<Unit>();
-
-        for (var i = 0; i < _unitTemplates.Length; i++)
-        {
-            var template = _unitTemplates[i];
-
-            for (var p = 0; p < 1; p++)
-            {
-                var unit = Object.Instantiate(template);
-                var team = (ETeam)i;
-                var cell = GetRandomFreeCell();
-                unit.Init(team, cell);
-                units.Add(unit);
-            }
-        }
-
-        _actorsList = new(units);
         _ = BattleCycle();
-
-
-        Cell GetRandomFreeCell()
-        {
-            for (var i = 0; i < Field.Width * Field.Length; i++)
-            {
-                var x = Random.Range(0, Field.Width);
-                var z = Random.Range(0, Field.Length);
-                var cell = Field.Instance[x, z];
-
-                if (units.Find(u => u.Cell == cell) == null)
-                {
-                    return cell;
-                }
-            }
-
-            return null;
-        }
     }
 
+    private async UniTask PlayerUnitsSpawnAsync()
+    {
+        var possibleCells = new List<Cell>();
+
+        _battleData.playerUnitsPossibleSpawnCells.ForEach(id =>
+        {
+            var x = id % Field.Width;
+            var z = id / Field.Width;
+            var cell = Field.Instance[x, z];
+            cell.SetHighlightState(EHighlightState.PossibleTarget);
+            possibleCells.Add(cell);
+        });
+
+        var raycastPointer = new RaycastPointer<CellView>();
+        var selectedCell = (Cell)default;
+
+        raycastPointer.OnClick.Subscribe(cellView =>
+        {
+            if (possibleCells.Contains(cellView.Cell))
+            {
+                selectedCell = cellView.Cell;
+            }
+        });
+
+        for (var i = 0; i < _battleData.playerUnitsTemplates.Count; i++)
+        {
+            selectedCell = null;
+
+            while (selectedCell == null)
+            {
+                await UniTask.Yield();
+            }
+
+            selectedCell.SetHighlightState(EHighlightState.None);
+            possibleCells.Remove(selectedCell);
+            
+            var unit = Object.Instantiate(_battleData.playerUnitsTemplates[i]);
+            unit.Init(ETeam.Player, selectedCell);
+            UnitsList.AddAUnit(unit);
+        }
+        
+        Field.Instance.SetCellsHighlightState(EHighlightState.None);
+    }
+
+    private async UniTask EnemyUnitsSpawnAsync()
+    {
+        for (var i = 0; i < _battleData.enemyUnitsSpawnCells.Count; i++)
+        {
+            var id = _battleData.enemyUnitsSpawnCells[i];
+            var x = id % Field.Width;
+            var z = id / Field.Width;
+            var cell = Field.Instance[x, z];
+            
+            var unit = Object.Instantiate(_battleData.enemyUnitsTemplates[i]);
+            unit.Init(ETeam.Enemy, cell);
+            UnitsList.AddAUnit(unit);
+            
+            await UniTask.Yield();
+        }
+    }
+    
     private async UniTask BattleCycle()
     {
+        await EnemyUnitsSpawnAsync();
+        await PlayerUnitsSpawnAsync();
+
         while (true)
         {
             RoundNumber.Value++;
@@ -72,22 +113,40 @@ public class BattleTurnSystem
 
     private async UniTask RoundCycle()
     {
-        for (var stage = EBattleStage.RoundStart; stage <= EBattleStage.RoundEnd; stage++)
+        Stage.Value = EBattleStage.RoundStart;
+        await ExecuteStageActionsAsync(EBattleStage.RoundStart);
+        await UniTask.WaitForSeconds(0.2f);
+
+        Stage.Value = EBattleStage.NonPlayerTurnPreparing;
+        await _aiTurnController.ExecuteAsync();
+        await UniTask.WaitForSeconds(0.2f);
+
+        Stage.Value = EBattleStage.PlayerTurn;
+        await _playerTurnController.ExecuteAsync();
+        await UniTask.WaitForSeconds(0.2f);
+
+        Stage.Value = EBattleStage.NonPlayerTurnExecution;
+        await ExecuteStageActionsAsync(EBattleStage.NonPlayerTurnExecution);
+        await UniTask.WaitForSeconds(0.2f);
+
+        Stage.Value = EBattleStage.RoundEnd;
+        await ExecuteStageActionsAsync(EBattleStage.RoundEnd);
+        await UniTask.WaitForSeconds(0.2f);
+    }
+
+    private async UniTask ExecuteStageActionsAsync(EBattleStage stage)
+    {
+        var stageActions = DeferredActionsList.GetActionsByStage(stage);
+
+        if (stageActions == null || stageActions.Count == 0)
         {
-            Stage.Value = stage;
-            var actors = _actorsList.GetActorsByStage(stage);
-
-            if (actors == null || actors.Count == 0)
-            {
-                continue;
-            }
-
-            for (var i = 0; i < actors.Count; i++)
-            {
-                await actors[i].ExecuteTurnAsync(stage);
-            }
-
-            await UniTask.WaitForSeconds(1f);
+            return;
+        }
+        
+        for (var i = 0; i < stageActions.Count; i++)
+        {
+            var action = stageActions[i];
+            await action.ExecuteAsync();
         }
     }
 }
